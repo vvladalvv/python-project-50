@@ -1,2 +1,2 @@
-gendiff -h:
-		poetry run gendiff -h
+# gendiff -h:
+# 		poetry run gendiff -h
