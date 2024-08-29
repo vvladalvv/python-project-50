@@ -1,4 +1,3 @@
-import pytest
 from gendiff import generate_diff
 
 
@@ -18,7 +17,7 @@ def test_generate_diff_empty_and_filled_files():
 def test_generate_diff_empty_files():
     file1 = 'tests/fixtures/empty1.json'
     file2 = 'tests/fixtures/empty2.json'
-    expected = '{}' #'{\n\n}'
+    expected = '{}'  # '{\n\n}'
     result = generate_diff(file1, file2)
     assert result == expected
 
