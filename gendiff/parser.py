@@ -29,7 +29,9 @@ def remove_empty_line(string):
         if line.strip():
             if ': ' in line:
                 key, value = line.split(': ', 1)
-                if not value.strip().lower() in ['true', 'false'] and not value.strip().isdigit():
+                vsl = value.strip().lower()
+                vsi = value.strip().isdigit()
+                if vsl not in ['true', 'false'] and not vsi:
                     value = f'"{value.strip()}"'
                 line = f"{key}: {value}"
             formatted_lines.append(line)

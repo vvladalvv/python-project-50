@@ -1,5 +1,6 @@
 import yaml
-from gendiff.parser import open_json_files, open_yaml_files, check_formal_file, remove_empty_line, sort_files
+from gendiff.parser import open_json_files, open_yaml_files, check_formal_file
+from gendiff.parser import remove_empty_line, sort_files
 
 
 def gen_diff(file_1, file_2):
@@ -23,20 +24,10 @@ def gen_diff(file_1, file_2):
 
 
 def gen_diff_json_and_yaml(file1, file2):
-    for _ in range(1):
-        if file1.endswith('.yaml'):
-            file_1 = open_yaml_files(file1)
-        elif file1.endswith('yml'):
-            file_1 = open_yaml_files(file1)
-        elif file1.endswith('.json'):
-            file_1 = open_json_files(file1)
-    for _ in range(1):
-        if file2.endswith('.yaml'):
-            file_2 = open_yaml_files(file2)
-        elif file2.endswith('yml'):
-            file_2 = open_yaml_files(file2)
-        elif file2.endswith('.json'):
-            file_2 = open_json_files(file2)
+    for i in [file1, file2]:
+        if i.endswith('.json'):
+            file_1 = open_json_files(i)
+        file_2 = open_yaml_files(i)
     return gen_diff(file_1, file_2)
 
 
