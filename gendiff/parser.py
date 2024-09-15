@@ -12,7 +12,14 @@ def open_yaml_files(file1):
     return data1
 
 
-def check_formal_file(file):
+def open_file_json_or_yaml(file):
+    if file.endswith('.json'):
+        file_1 = open_json_files(file)
+    file_1 = open_yaml_files(file)
+    return file_1
+
+
+def get_format_file(file):
     file_copy = file[:]
     result = ''
     for i in file_copy:
@@ -36,8 +43,3 @@ def remove_empty_line(string):
                 line = f"{key}: {value}"
             formatted_lines.append(line)
     return '\n'.join(formatted_lines)
-
-
-def sort_files(file1, file2):
-    all_keys = sorted(set(file1.keys()) | set(file2.keys()))
-    return all_keys

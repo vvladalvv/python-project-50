@@ -1,55 +1,39 @@
-import yaml
-from gendiff.parser import open_json_files, open_yaml_files, check_formal_file
-from gendiff.parser import remove_empty_line, sort_files
+from gendiff.parser import open_file_json_or_yaml
+from gendiff.formaters.stylish import stringify
 
 
-def gen_diff(file_1, file_2):
-    all_keys = sort_files(file_1, file_2)
-    result = []
-    if file_1 or file_2:
+def generate_diff(file1, file2, format_file='stylish'):
+    data1 = open_file_json_or_yaml(file1)
+    data2 = open_file_json_or_yaml(file2)
+    if data1 == {} and data2 == {}:
+        return '{}'
+
+    def walk(f_1, f_2):
+        result = {}
+        all_keys = sorted(set(f_1.keys()) | set(f_2.keys()))
         for key in all_keys:
-            if key not in file_1:
-                result.append(f"  + {key}: {yaml.dump(file_2[key])}")
-            elif key not in file_2:
-                result.append(f"  - {key}: {yaml.dump(file_1[key])}")
-            elif file_1[key] == file_2[key]:
-                result.append(f"    {key}: {yaml.dump(file_1[key])}")
+            if key in f_1 and key in f_2:
+                if f_2[key] != f_1[key]:
+                    check_form_f_1 = isinstance(f_1[key], dict)
+                    check_form_f_2 = isinstance(f_2[key], dict)
+                    if check_form_f_1 and check_form_f_2:
+                        result[key] = {
+                            "status": "children",
+                            "value": walk(f_1[key], f_2[key])
+                        }
+                    else:
+                        result[key] = {
+                            "status": "update",
+                            "old_value": f_1[key],
+                            "new_value": f_2[key]
+                        }
+                else:
+                    result[key] = {"status": 'unchanged', 'value': f_1[key]}
+            elif key in f_1 and key not in f_2:
+                result[key] = {"status": "removed", "value": f_1[key]}
             else:
-                result.append(f"  - {key}: {yaml.dump(file_1[key])}")
-                result.append(f"  + {key}: {yaml.dump(file_2[key])}")
-        res = "{\n" + "".join(result) + "\n}"
-        ress = res.replace('...', '')
-        return remove_empty_line(ress)
-    return '{}'
-
-
-def gen_diff_json_and_yaml(file1, file2):
-    for i in [file1, file2]:
-        if i.endswith('.json'):
-            file_1 = open_json_files(i)
-        file_2 = open_yaml_files(i)
-    return gen_diff(file_1, file_2)
-
-
-def gen_diff_two_json(file1, file2):
-    data1 = open_json_files(file1)
-    data2 = open_json_files(file2)
-    return gen_diff(data1, data2)
-
-
-def gen_diff_two_yaml(file1, file2):
-    data1 = open_yaml_files(file1)
-    data2 = open_yaml_files(file2)
-    return gen_diff(data1, data2)
-
-
-def generate_diff(file_path1, file_path2):
-    format_file1 = check_formal_file(file_path1)
-    format_file2 = check_formal_file(file_path2)
-    if format_file1 == '.json' and format_file2 == '.json':
-        return gen_diff_two_json(file_path1, file_path2)
-    elif format_file1 == '.yml' and format_file2 == '.yml':
-        return gen_diff_two_yaml(file_path1, file_path2)
-    elif format_file1 == '.yaml' and format_file2 == '.yaml':
-        return gen_diff_two_yaml(file_path1, file_path2)
-    return gen_diff_json_and_yaml(file_path1, file_path2)
+                result[key] = {"status": "added", "value": f_2[key]}
+        return result
+    if format_file == 'stylish':
+        return stringify(walk(data1, data2))
+    return walk(data1, data2)
