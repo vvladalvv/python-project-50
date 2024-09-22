@@ -45,7 +45,7 @@ def stringify(diff):
             if status == "children":
                 lines.append(f"{get_indent(depth)}{key}: {{")
                 walk(val['value'], depth + 1)
-            if status == 'update':
+            if status == 'updated':
                 new = formater(process_dict(val['new_value'], depth))
                 old = formater(process_dict(val['old_value'], depth))
                 lines.append(f"{get_indent(depth, offset=2)}- {key}:{old}")

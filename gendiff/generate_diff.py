@@ -1,5 +1,6 @@
 from gendiff.parser import open_file_json_or_yaml
 from gendiff.formaters.stylish import stringify
+from gendiff.formaters.plain import plain
 
 
 def generate_diff(file1, file2, format_file='stylish'):
@@ -23,7 +24,7 @@ def generate_diff(file1, file2, format_file='stylish'):
                         }
                     else:
                         result[key] = {
-                            "status": "update",
+                            "status": "updated",
                             "old_value": f_1[key],
                             "new_value": f_2[key]
                         }
@@ -36,4 +37,6 @@ def generate_diff(file1, file2, format_file='stylish'):
         return result
     if format_file == 'stylish':
         return stringify(walk(data1, data2))
+    if format_file == 'plain':
+        return plain(walk(data1, data2))
     return walk(data1, data2)

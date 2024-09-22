@@ -10,6 +10,7 @@ def main():
     parser.add_argument('second_file', help='path to second file')
     parser.add_argument('-f', '--format',
                         help='set format of output',
+                        choices=['stylish', 'plain'],
                         default='stylish')
     args = parser.parse_args()
     diff = generate_diff(args.first_file, args.second_file, args.format)
