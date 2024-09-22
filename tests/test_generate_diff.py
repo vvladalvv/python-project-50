@@ -1,4 +1,6 @@
 from gendiff import generate_diff
+import json
+
 
 res = """{
     common: {
@@ -151,3 +153,17 @@ Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]"""
     assert result == result2
+
+
+def test_generate_diff_json_format():
+    file1 = 'tests/fixtures/file1.json'
+    file2 = 'tests/fixtures/file2.json'
+    result = generate_diff(file1, file2, format_file='json')
+    parsed_result = json.loads(result)
+    assert 'common' in parsed_result
+    assert parsed_result['common']['status'] == 'children'
+    assert 'follow' in parsed_result['common']['value']
+    assert parsed_result['common']['value']['follow']['status'] == 'added'
+    assert parsed_result['common']['value']['setting3']['status'] == 'updated'
+    assert 'setting6' in parsed_result['common']['value']
+    assert 'doge' in parsed_result['common']['value']['setting6']['value']

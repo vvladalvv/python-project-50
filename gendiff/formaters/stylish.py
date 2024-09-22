@@ -33,7 +33,7 @@ def process_dict(dictt, depth=1):
     return dictt
 
 
-def stringify(diff):
+def stylish(diff):
     lines = ["{"]
 
     def walk(diff_dict, depth=1):
