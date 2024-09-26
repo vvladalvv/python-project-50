@@ -3,9 +3,12 @@ def process_value(val):
         return '[complex value]'
     elif isinstance(val, bool):
         return "false" if val is False else "true"
+    elif isinstance(val, int):
+        return f"{val}"
     elif val is None:
         return 'null'
-    return f"'{val}'"
+    else:
+        return f"'{val}'"
 
 
 def find_path(tree, target, current_path="", found_paths=None):
