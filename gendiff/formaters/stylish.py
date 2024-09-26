@@ -1,8 +1,8 @@
-def formater(val):
+def process_value(val):
     if isinstance(val, bool):
         return " false" if val is False else " true"
     elif val == "":
-        return ""
+        return " "
     elif val is None:
         return " null"
     else:
@@ -33,28 +33,28 @@ def process_dict(dictt, depth=1):
     return dictt
 
 
-def stylish(diff):
+def format_stylish(diff):
     lines = ["{"]
 
     def walk(diff_dict, depth=1):
         for key, val in diff_dict.items():
             status = val['status']
             if status == 'added':
-                value = formater(process_dict(val['value'], depth))
+                value = process_value(process_dict(val['value'], depth))
                 lines.append(f"{get_indent(depth, offset=2)}+ {key}:{value}")
             if status == "children":
                 lines.append(f"{get_indent(depth)}{key}: {{")
                 walk(val['value'], depth + 1)
             if status == 'updated':
-                new = formater(process_dict(val['new_value'], depth))
-                old = formater(process_dict(val['old_value'], depth))
+                new = process_value(process_dict(val['new_value'], depth))
+                old = process_value(process_dict(val['old_value'], depth))
                 lines.append(f"{get_indent(depth, offset=2)}- {key}:{old}")
                 lines.append(f"{get_indent(depth, offset=2)}+ {key}:{new}")
             if status == 'unchanged':
-                value = formater(process_dict(val['value'], depth + 1))
+                value = process_value(process_dict(val['value'], depth + 1))
                 lines.append(f"{get_indent(depth, offset=2)}  {key}:{value}")
             if status == 'removed':
-                value = formater(process_dict(val['value'], depth))
+                value = process_value(process_dict(val['value'], depth))
                 lines.append(f"{get_indent(depth, offset=2)}- {key}:{value}")
         lines.append(f'{get_indent(depth-1)}}}')
     walk(diff)
