@@ -26,7 +26,7 @@ def process_dict(dictt, depth=1):
                     walk(val)
                     depth -= 1
                 else:
-                    lines.append(f"{get_indent(depth+1)}{key}: {val}")
+                    lines.append(f"{get_indent(depth + 1)}{key}: {val}")
             lines.append(f"{get_indent(depth)}}}")
         walk(dictt)
         return '\n'.join(lines)
@@ -56,6 +56,6 @@ def format_stylish(diff):
             if status == 'removed':
                 value = process_value(process_dict(val['value'], depth))
                 lines.append(f"{get_indent(depth, offset=2)}- {key}:{value}")
-        lines.append(f'{get_indent(depth-1)}}}')
+        lines.append(f'{get_indent(depth - 1)}}}')
     walk(diff)
     return '\n'.join(lines)
