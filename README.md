@@ -23,6 +23,6 @@ gendiff -h
 ### gendiff file_1 file_2:
 [![asciicast](https://asciinema.org/a/szbqPef8n4LecmAXoukGzGhB9.svg)](https://asciinema.org/a/szbqPef8n4LecmAXoukGzGhB9)
 ### gendiff -f plain file_1 file_2:
-[![asciicast](https://asciinema.org/a/TUChNDu8bF4hbXiozdr2RHmmc.svg)(https://asciinema.org/a/TUChNDu8bF4hbXiozdr2RHmmc)]
+[![asciicast](https://asciinema.org/a/TUChNDu8bF4hbXiozdr2RHmmc.svg)](https://asciinema.org/a/TUChNDu8bF4hbXiozdr2RHmmc)
 ### gendiff -f json file_1 file_2:
-[![asciicast](https://asciinema.org/a/0so6fUFSll5w6OBQbnk7SPYrM.svg)(https://asciinema.org/a/0so6fUFSll5w6OBQbnk7SPYrM)]
+[![asciicast](https://asciinema.org/a/0so6fUFSll5w6OBQbnk7SPYrM.svg)](https://asciinema.org/a/0so6fUFSll5w6OBQbnk7SPYrM)
